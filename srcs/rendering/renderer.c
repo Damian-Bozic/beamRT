@@ -120,12 +120,12 @@ void	render_frame(t_mini *mini)
 	bitmap = make_bitmap(mini);
 	data = mlx_get_data_addr(mini->img_buf, &mini->bpp,
 			&mini->size_line, &mini->endian);
-	while (y != SCREEN_Y * 8)
+	while (y != SCREEN_Y * RES_SCALE)
 	{
-		while (x != SCREEN_X * 8)
+		while (x != SCREEN_X * RES_SCALE)
 		{
 			// colour = cast_ray(mini, x, y);
-			ft_pixel_put_img(mini, data, x, y, bitmap[y/8][x/8]);
+			ft_pixel_put_img(mini, data, x, y, bitmap[y/RES_SCALE][x/RES_SCALE]);
 			x++;
 		}
 		x = 0;
@@ -141,6 +141,7 @@ void	render_frame(t_mini *mini)
 		usec += 1000000;
 	}
 	printf("bitmap generated in %lds and %ldms\n", seconds, usec / 1000);
-
+	print_beam(&mini->objs->bms[0]);
+	print_mirror(&mini->objs->mrrs[0]);
 	mlx_put_image_to_window(mini->mlx, mini->win, mini->img_buf, 0, 0);
 }

@@ -47,6 +47,7 @@ int	main(int argc, char **argv)
 	if (0 != error_code)
 		print_parse_error_and_exit(error_code);
 	init_objects(&count, &unique, &objects);
+	// print_object_counts(&count, &unique);
 	parse_file(argv[1], &objects);
 	mini.objs = &objects;
 	init_mlx(&mini);

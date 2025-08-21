@@ -27,6 +27,8 @@
 # define BAD_LIGHT 7
 # define BAD_PLANE 8
 # define BAD_SPHERE 9
+# define BAD_BEAM 10
+# define BAD_MIRROR 11
 
 // check_utils
 int			check_float_range(char *str, int min, int max);
@@ -92,5 +94,15 @@ void		print_plane(t_plane *plane);
 int			check_sphere(char **split);
 t_sphere	create_sphere(char *line);
 void		print_sphere(t_sphere *sphere);
+
+// beam
+int	check_beam(char **split);
+t_beam	create_beam(char *line);
+void	print_beam(t_beam *beam);
+
+// mirror
+int	check_mirror(char **split);
+t_mirror	create_mirror(char *line);
+void	print_mirror(t_mirror *mirror);
 
 #endif

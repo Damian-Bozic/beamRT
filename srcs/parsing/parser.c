@@ -34,6 +34,10 @@ void	parse_object(char *line, t_objects *objects)
 		objects->plns[objects->count.plane++] = create_plane(line);
 	if (SPHERE == type)
 		objects->sprs[objects->count.sphere++] = create_sphere(line);
+	if (BEAM == type)
+		objects->bms[objects->count.beam++] = create_beam(line);
+	if (MIRROR == type)
+		objects->mrrs[objects->count.mirror++] = create_mirror(line);
 	ft_free_stringlist(split);
 }
 
@@ -48,6 +52,8 @@ void	free_objects(t_objects *objects)
 	free(objects->lgts);
 	free(objects->plns);
 	free(objects->sprs);
+	free(objects->bms);
+	free(objects->mrrs);
 }
 
 void	parse_file(char *filename, t_objects *objects)

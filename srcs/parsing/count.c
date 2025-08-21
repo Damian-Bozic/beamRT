@@ -41,6 +41,10 @@ void	init_objects(t_count *count, t_count *unique, t_objects *objects)
 			* (count->plane + unique->plane));
 	objects->sprs = malloc(sizeof(t_sphere)
 			* (count->sphere + unique->sphere));
+	objects->bms = malloc(sizeof(t_beam)
+			* (count->beam + unique->beam));
+	objects->mrrs = malloc(sizeof(t_mirror)
+			* (count->mirror + unique->mirror));
 }
 
 /*
@@ -55,7 +59,9 @@ int	check_count(t_count *count, t_count *unique)
 		+ check_uniqueness(count->cylinder, unique->cylinder)
 		+ check_uniqueness(count->light, unique->light)
 		+ check_uniqueness(count->plane, unique->plane)
-		+ check_uniqueness(count->sphere, unique->sphere);
+		+ check_uniqueness(count->sphere, unique->sphere)
+		+ check_uniqueness(count->beam, unique->beam)
+		+ check_uniqueness(count->mirror, unique->mirror);
 	if (0 == error_code)
 		return (0);
 	else
@@ -73,4 +79,6 @@ void	init_count(t_count *count)
 	count->light = 0;
 	count->plane = 0;
 	count->sphere = 0;
+	count->beam = 0;
+	count->mirror = 0;
 }

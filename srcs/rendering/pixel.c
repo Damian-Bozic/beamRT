@@ -27,9 +27,9 @@ void	print_pixel(t_pixel *pixel)
 {
 	print_tuple(&pixel->hit_normal, "Pixel hit_normal:");
 	print_tuple(&pixel->hit_pos, "Pixel hit_pos:");
-	printf("Pixel rgb:\n");
+	printf("Pixel rgb: ");
 	print_rgb(&pixel->rgb);
-	printf("Pixel ray:\n");
+	printf("Pixel ray: ");
 	print_tuple(&pixel->ray.orient, "Ray orient");
 	print_tuple(&pixel->ray.origin, "Ray origin");
 }

@@ -50,7 +50,7 @@ t_sphere	create_sphere(char *line)
 void	print_sphere(t_sphere *sphere)
 {
 	print_tuple(&sphere->pos, "Sphere pos:");
-	printf("Sphere rgb:\n");
+	printf("Sphere rgb: ");
 	print_rgb(&sphere->rgb);
 	printf("Sphere diameter: %f\n", sphere->diameter);
 }

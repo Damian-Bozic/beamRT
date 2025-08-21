@@ -155,9 +155,9 @@ void	init_mlx(t_mini *mini)
 {
 	mini->mlx = mlx_init();
 	// TEMP SCREEN SIZE INCREASE TODO
-	mini->win = mlx_new_window(mini->mlx, SCREEN_X * 8, SCREEN_Y * 8,
+	mini->win = mlx_new_window(mini->mlx, SCREEN_X * RES_SCALE, SCREEN_Y * RES_SCALE,
 			"Sisyphean RayTrace");
-	mini->img_buf = mlx_new_image(mini->mlx, SCREEN_X * 8, SCREEN_Y * 8);
+	mini->img_buf = mlx_new_image(mini->mlx, SCREEN_X * RES_SCALE, SCREEN_Y * RES_SCALE);
 	mlx_string_put(mini->mlx, mini->win, (SCREEN_X / 2) - 96, (SCREEN_Y / 2)
 		- 3, 0xFFFFCC, "A cylinder, a sphere, and a plane");
 	mlx_string_put(mini->mlx, mini->win, (SCREEN_X / 2) - 120, (SCREEN_Y / 2)

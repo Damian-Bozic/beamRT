@@ -23,6 +23,8 @@ typedef enum e_type
 	LIGHT, //		l
 	PLANE, //		pl
 	SPHERE, //		sp
+	BEAM, //		bm
+	MIRROR, //		mrr
 	UNKNOWN
 }	t_type;
 
@@ -52,6 +54,8 @@ typedef struct s_count
 	int	light;
 	int	plane;
 	int	sphere;
+	int	beam;
+	int mirror;
 }	t_count;
 
 typedef struct s_ambient
@@ -97,6 +101,21 @@ typedef struct s_sphere
 	t_rgb	rgb;
 }	t_sphere;
 
+typedef struct s_beam
+{
+	t_tuple pos;
+	t_tuple	normal;
+	t_rgb	rgb;
+}	t_beam;
+
+typedef struct s_mirror
+{
+	t_tuple pos;
+	t_tuple normal;
+	float	diameter;
+	t_rgb	rgb;
+}	t_mirror;
+
 typedef struct s_objects
 {
 	t_ambient	*amb;
@@ -105,6 +124,8 @@ typedef struct s_objects
 	t_light		*lgts;
 	t_plane		*plns;
 	t_sphere	*sprs;
+	t_beam		*bms;
+	t_mirror	*mrrs;
 	t_count		count;
 }	t_objects;
 

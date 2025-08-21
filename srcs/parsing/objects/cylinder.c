@@ -57,7 +57,7 @@ void	print_cylinder(t_cyl *cylinder)
 {
 	print_tuple(&cylinder->pos, "Cylinder pos:");
 	print_tuple(&cylinder->axis, "Cylinder axis:");
-	printf("Cylinder rgb:\n");
+	printf("Cylinder rgb: ");
 	print_rgb(&cylinder->rgb);
 	printf("Cylinder diameter: %f\n", cylinder->diameter);
 	printf("Cylinder height: %f\n", cylinder->height);

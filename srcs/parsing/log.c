@@ -45,6 +45,10 @@ void	print_parse_error_and_exit(int error_code)
 		printf("A plane object is malformed!\n");
 	if (BAD_SPHERE == error_code)
 		printf("A sphere object is malformed!\n");
+	if (BAD_BEAM == error_code)
+		printf("A beam object is malformed!\n");
+	if (BAD_MIRROR == error_code)
+		printf("A mirror object is malformed!\n");
 	exit(error_code);
 }
 
@@ -59,6 +63,8 @@ void	print_object_counts(t_count *count, t_count *unique)
 	printf("   Light: %3i (%3i unique)\n", count->light, unique->light);
 	printf("   Plane: %3i (%3i unique)\n", count->plane, unique->plane);
 	printf("  Sphere: %3i (%3i unique)\n", count->sphere, unique->sphere);
+	printf("  Beam: %3i (%3i unique)\n", count->beam, unique->beam);
+	printf("  Mirror: %3i (%3i unique)\n", count->mirror, unique->mirror);
 }
 
 /*

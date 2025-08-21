@@ -29,6 +29,10 @@ static void	inc_object(char *str, t_count *count, t_count *unique)
 		count->plane++;
 	if (0 == ft_strcmp("sp", str))
 		count->sphere++;
+	if (0 == ft_strcmp("bm", str))
+		count->beam++;
+	if (0 == ft_strcmp("mrr", str))
+		count->mirror++;
 	if (0 == ft_strcmp("A", str))
 		unique->ambient++;
 	if (0 == ft_strcmp("C", str))
@@ -41,6 +45,10 @@ static void	inc_object(char *str, t_count *count, t_count *unique)
 		unique->plane++;
 	if (0 == ft_strcmp("SP", str))
 		unique->sphere++;
+	if (0 == ft_strcmp("BM", str))
+		unique->beam++;
+	if (0 == ft_strcmp("MRR", str))
+		unique->mirror++;
 }
 
 /*

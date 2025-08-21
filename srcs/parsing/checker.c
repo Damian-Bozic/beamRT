@@ -29,6 +29,10 @@ t_type	get_type(char *str)
 		return (PLANE);
 	if (0 == ft_strcmp("sp", str) || 0 == ft_strcmp("SP", str))
 		return (SPHERE);
+	if (0 == ft_strcmp("bm", str) || 0 == ft_strcmp("BM", str))
+		return (BEAM);
+	if (0 == ft_strcmp("mrr", str) || 0 == ft_strcmp("MRR", str))
+		return (MIRROR);
 	return (UNKNOWN);
 }
 
@@ -56,6 +60,10 @@ static	int	check_object(char *line)
 		error_code = check_plane(split);
 	if (SPHERE == type)
 		error_code = check_sphere(split);
+	if (BEAM == type)
+		error_code = check_beam(split);
+	if (MIRROR == type)
+		error_code = check_mirror(split);
 	ft_free_stringlist(split);
 	return (error_code);
 }

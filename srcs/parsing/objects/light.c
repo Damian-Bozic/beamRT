@@ -55,7 +55,7 @@ t_light	create_light(char *line)
 void	print_light(t_light *light)
 {
 	print_tuple(&light->pos, "light pos:");
-	printf("Light rgb:\n");
+	printf("Light rgb: ");
 	print_rgb(&light->rgb);
 	printf("Light brightness: %f\n", light->brightness);
 }

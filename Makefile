@@ -18,7 +18,9 @@ OBJECTS = 	$(addprefix parsing/objects/, 		ambient				\
 												cylinder			\
 												light				\
 												plane				\
-												sphere)
+												sphere				\
+												beam				\
+												mirror)
 
 PARSING = 	$(addprefix parsing/, 				check_utils			\
 												checker				\

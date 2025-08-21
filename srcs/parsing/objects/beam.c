@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   plane.c                                            :+:      :+:    :+:   */
+/*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbozic <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 13:13:44 by dbozic            #+#    #+#             */
-/*   Updated: 2025/04/25 13:13:45 by dbozic           ###   ########.fr       */
+/*   Created: 2025/04/25 13:13:39 by dbozic            #+#    #+#             */
+/*   Updated: 2025/04/25 13:13:39 by dbozic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,54 +15,42 @@
 /*
 	Checks if the line has all the right elements
 */
-int	check_plane(char **split)
+int	check_beam(char **split)
 {
 	if (4 != ft_count_array(split))
-		return (BAD_PLANE);
+		return (BAD_BEAM);
 	if (BAD_INPUT == check_coordinates(split[1]))
-		return (BAD_PLANE);
+		return (BAD_BEAM);
 	if (BAD_INPUT == check_float_range(split[2], -1, 1))
-		return (BAD_PLANE);
+		return (BAD_BEAM);
 	if (BAD_INPUT == check_rgb(split[3]))
-		return (BAD_PLANE);
+		return (BAD_BEAM);
 	return (0);
 }
 
 /*
 	Creates from a line. Note this doesn't do any checking
 */
-t_plane	create_plane(char *line)
+t_beam	create_beam(char *line)
 {
-	t_plane		plane;
-	char		**split;
+	t_beam	beam;
+	char	**split;
 
 	split = ft_split(line, ' ');
-	plane.pos = create_point_from_str(split[1]);
-	plane.normal = create_point_from_str(split[2]);
-	plane.rgb = rgb_from_str(split[3]);
+	beam.pos = create_point_from_str(split[1]);
+	beam.normal = create_point_from_str(split[2]);
+	beam.rgb = rgb_from_str(split[3]);
 	ft_free_stringlist(split);
-	return (plane);
+	return (beam);
 }
 
 /*
-	Debugs a plane
+	Debugs a cylinder
 */
-void	print_plane(t_plane *plane)
+void	print_beam(t_beam *beam)
 {
-	print_tuple(&plane->pos, "Plane pos:");
-	print_tuple(&plane->normal, "Plane normal:");
-	printf("Plane rgb: ");
-	print_rgb(&plane->rgb);
+	print_tuple(&beam->pos, "Beam pos:");
+	print_tuple(&beam->normal, "Beam normal:");
+	printf("Beam rgb: ");
+	print_rgb(&beam->rgb);
 }
-
-// pl	0.0,0.0,-10.0	0.0,1.0,0.0		0,0,225
-// ∗ x,y,z coordinates of a point in the plane
-// ∗ 3d normalized normal vector. In range [-1,1] for each x,y,z axis
-// ∗ R,G,B colors in range [0-255]
-
-// typedef struct s_plane
-// {
-// 	t_tuple	pos;
-// 	t_tuple	normal;
-// 	t_rgb	rgb;
-// }	t_plane;

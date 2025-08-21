@@ -51,7 +51,7 @@ t_ambient	create_ambient(char *line)
 */
 void	print_ambient(t_ambient *ambient)
 {
-	printf("Ambient rgb:\n");
+	printf("Ambient rgb: ");
 	print_rgb(&ambient->rgb);
 	printf("Ambient ratio: %f\n", ambient->ratio);
 }

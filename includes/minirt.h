@@ -36,11 +36,16 @@
 // # define SCREEN_X 480
 // # define SCREEN_Y 720
 
+// # define SCREEN_X 480
+// # define SCREEN_Y 270
+// # define RES_SCALE 4
+
 # define SCREEN_X 240
 # define SCREEN_Y 135
-# define N_OF_CORES 4
+# define RES_SCALE 8
+
+# define N_OF_CORES 20
 # define MOUSE_SENSE 0.5
-# define RES_SCALE 4
 // # define SCREEN_X 240
 // # define SCREEN_Y 160
 
