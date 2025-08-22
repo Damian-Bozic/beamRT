@@ -106,6 +106,7 @@ typedef struct s_beam
 	t_tuple pos;
 	t_tuple	normal;
 	t_rgb	rgb;
+	t_tuple	end_pos;
 }	t_beam;
 
 typedef struct s_mirror

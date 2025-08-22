@@ -56,6 +56,67 @@ void	find_closer_point(t_pixel *temp_pixel, t_pixel *final_pixel, t_rgb *rgb)
 	}
 }
 
+// a = camera ray orient
+// b = beam ray orient
+// C = camera origin
+// B = beam origin
+int find_beam_intersect(t_beam *beam, t_pixel *pixel)
+{
+	t_tuple	camera_closest_point;
+	t_tuple beam_closest_point;
+	t_tuple	W0;
+	float	M;
+	float	C1;
+	float	C2;
+	float	D; // parallel check
+	float	t; // distance along camera ray
+	float	s; // distance along beam ray
+
+	W0 = subtract_tuples(&pixel->ray.origin, &beam->pos);
+	M = dot_product(&pixel->ray.orient, &beam->normal);
+	C1 = dot_product(&pixel->ray.orient, &W0);
+	C2 = dot_product(&beam->normal, &W0);
+	
+	D = 1 - (M * M);
+
+	if (!zero_epsilon_check(D))
+		return (0);
+
+	t = ((M * C2) - C1) / D;
+	s = (C2 - (M * C1)) / D;
+
+	if (s < EPSILON || t < EPSILON)
+		return (0);
+
+	camera_closest_point = scale_tuple(&pixel->ray.orient, t);
+	camera_closest_point = add_tuples(&pixel->ray.origin, &camera_closest_point);
+
+	beam_closest_point = scale_tuple(&beam->normal, s);
+	beam_closest_point = add_tuples(&beam->pos, &beam_closest_point);
+	// TODO cut here CHECK FOR AFTER END OF LASER
+	// TEST USING scences/basic3.rt file.
+/* 	W0 = subtract_tuples(&camera_closest_point, &beam_closest_point);
+	D = dot_product(&beam->normal, &W0);
+
+	if (D > 0)
+		return (0); */
+	// print_tuple(&beam->end_pos, "end_pos");
+	// printf("dist %f\n", distance_between_points(camera_closest_point, beam_closest_point));
+	if (distance_between_points(camera_closest_point, beam_closest_point) < 0.2)
+		return (1);
+	return (0);
+} // if camera_closest_point is infront of end_pixel
+
+int	find_beam_end_pos()
+{ // returns 1 on mirror hit, returns 0 normally
+
+	//TODO
+	// have logic that if the beam touches a mirror at end point
+	// then make a new beam with parent beam end point as its start point
+	// then have the new beams normal based of mirror and parent beams angle.
+	return (0);
+}
+
 void	find_all_intersections(t_pixel *temp, t_pixel	*final, t_mini *mini)
 {
 	int		i;
@@ -75,6 +136,18 @@ void	find_all_intersections(t_pixel *temp, t_pixel	*final, t_mini *mini)
 			find_closer_point(temp, final, &mini->objs->cyls[i].rgb);
 		if (find_end_cap_intersect(&mini->objs->cyls[i], temp))
 			find_closer_point(temp, final, &mini->objs->cyls[i].rgb);
+	}
+	i = -1;
+	while (++i < mini->objs->count.beam)
+	{
+		if (find_beam_intersect(&mini->objs->bms[i], temp))
+		{ // find whether any part of the beam is being blocked from view
+			final->hit_pos = mini->objs->cams->pos;
+			final->hit_normal = mini->objs->cams->orient;
+			final->rgb.r = 255;
+			final->rgb.g = 255;
+			final->rgb.b = 0;
+		}
 	}
 }
 
@@ -100,7 +173,7 @@ int	cast_ray(t_mini *mini, int x, int y)
 	find_ambient(mini, &temp_pixel);
 	i = -1;
 	if (vector_magnitude(&temp_pixel.hit_pos) < 999)
-	{
+	{ // TODO have the brightness be full if normal == NULL
 		while (++i < mini->objs->count.light)
 		{
 			if (!check_for_shadow(mini, &temp_pixel.hit_pos,

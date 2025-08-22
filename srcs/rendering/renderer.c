@@ -141,7 +141,5 @@ void	render_frame(t_mini *mini)
 		usec += 1000000;
 	}
 	printf("bitmap generated in %lds and %ldms\n", seconds, usec / 1000);
-	print_beam(&mini->objs->bms[0]);
-	print_mirror(&mini->objs->mrrs[0]);
 	mlx_put_image_to_window(mini->mlx, mini->win, mini->img_buf, 0, 0);
 }

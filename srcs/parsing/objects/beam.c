@@ -40,6 +40,8 @@ t_beam	create_beam(char *line)
 	beam.pos = create_point_from_str(split[1]);
 	beam.normal = create_point_from_str(split[2]);
 	beam.rgb = rgb_from_str(split[3]);
+	beam.end_pos = scale_tuple(&beam.normal, 20); // TODO make length max 1000, not 20
+	beam.end_pos = add_tuples(&beam.pos, &beam.end_pos);
 	ft_free_stringlist(split);
 	return (beam);
 }
@@ -51,6 +53,7 @@ void	print_beam(t_beam *beam)
 {
 	print_tuple(&beam->pos, "Beam pos:");
 	print_tuple(&beam->normal, "Beam normal:");
+	print_tuple(&beam->end_pos, "Beam end pos:");
 	printf("Beam rgb: ");
 	print_rgb(&beam->rgb);
 }

@@ -42,7 +42,7 @@
 
 # define SCREEN_X 240
 # define SCREEN_Y 135
-# define RES_SCALE 8
+# define RES_SCALE 5
 
 # define N_OF_CORES 20
 # define MOUSE_SENSE 0.5
