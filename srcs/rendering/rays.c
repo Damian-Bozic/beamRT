@@ -18,7 +18,7 @@
 // float	camera_half_width;	3
 // float	camera_half_height;	4
 // float	canvas_x;			5
-// float	canvas_y;			6	
+// float	canvas_y;			6
 void	find_ray_orientation(t_pixel *pixel, t_mini *mini, int x, int y)
 {
 	float	norm[7];
