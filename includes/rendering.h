@@ -35,7 +35,7 @@ void	print_pixel(t_pixel *pixel);
 float	distance_between_points(t_tuple point_a, t_tuple point_b);
 void	find_ambient(t_mini *mini, t_pixel *pixel);
 void	find_diffuse(t_pixel *pixel, t_light *light);
-int		cast_ray(t_mini *mini, int x, int y);
+t_rgb	cast_ray(t_mini *mini, int x, int y);
 // void	print_ray(t_ray *ray);
 
 // basic maths

@@ -158,7 +158,7 @@ void	copy_pixel_hit(t_pixel *orig, t_pixel *copy)
 	orig->hit_rgb = copy->rgb;
 }
 
-int	cast_ray(t_mini *mini, int x, int y)
+t_rgb	cast_ray(t_mini *mini, int x, int y)
 {
 	int		i;
 	t_pixel	temp_pixel;
@@ -184,7 +184,7 @@ int	cast_ray(t_mini *mini, int x, int y)
 			}
 		}
 	}
-	return (rgb_to_int(temp_pixel.rgb));
+	return (temp_pixel.rgb);
 }
 
 // /*

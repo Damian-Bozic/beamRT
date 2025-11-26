@@ -171,7 +171,7 @@ void	init_mlx(t_mini *mini)
 	render_frame(mini);
 	mlx_key_hook(mini->win, detect_key_inputs, mini);
 	mlx_hook(mini->win, 17, 0, detect_close, mini);
-	mlx_hook(mini->win, 6, 1L<<6, detect_mouse_movements, mini);
-	mlx_loop_hook(mini->mlx, &temp_smoother, mini);
+	// mlx_hook(mini->win, 6, 1L<<6, detect_mouse_movements, mini);
+	// mlx_loop_hook(mini->mlx, &temp_smoother, mini);
 	mlx_loop(mini->mlx);
 }

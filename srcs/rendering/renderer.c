@@ -29,19 +29,64 @@ void *threaded_process(void *sent)
 	t_thread_info	*info;
 	int 			x;
 	int				y;
+	int				i;
+	t_rgb			sub_colour[16];
+	t_rgb			final_rgb;
+
+	static const float ss_offsets[16][2] = {
+		{  0.0625f, -0.1875f },
+		{ -0.0625f,  0.1875f },
+		{  0.3125f, -0.0625f },
+		{ -0.1875f, -0.3125f },
+		{ -0.3125f,  0.3125f },
+		{ -0.4375f, -0.0625f },
+		{  0.4375f,  0.0625f },
+		{  0.1875f,  0.4375f },
+		{  0.3750f, -0.3125f },
+		{ -0.3750f, -0.4375f },
+		{ -0.2500f, -0.1250f },
+		{  0.0f,      0.3750f },
+		{  0.2500f,  0.1250f },
+		{ -0.1250f, -0.3750f },
+		{  0.1250f,  0.2500f },
+		{ -0.0625f,  0.0f    }
+	};
 
 	info = (t_thread_info *)sent;
 	y = info->corenumber;
+
 	while (y < SCREEN_Y)
 	{
-		x = -1;
-		while (++x < SCREEN_X)
+		for (x = 0; x < SCREEN_X; x++)
 		{
-			info->bitmap[y][x] = cast_ray(info->mini, x, y);
+			for (i = 0; i < 16; i++)
+			{
+				sub_colour[i] = cast_ray(info->mini,
+					x + ss_offsets[i][0],
+					y + ss_offsets[i][1]);
+			}
+			final_rgb.r = 0;
+			final_rgb.g = 0;
+			final_rgb.b = 0;
+			for (i = 0; i < 16; i++)
+			{
+				final_rgb.r += sub_colour[i].r;
+				final_rgb.g += sub_colour[i].g;
+				final_rgb.b += sub_colour[i].b;
+			}
+			final_rgb.r /= 16;
+			final_rgb.g /= 16;
+			final_rgb.b /= 16;
+			info->bitmap[y][x] = rgb_to_int(final_rgb);
 		}
+
+		printf("Row %d out of %d complete (%.2f%%)\n",
+			y + 1, SCREEN_Y, ((float)y / (float)SCREEN_Y * 100.0f));
+
 		y += N_OF_CORES;
 	}
-	return(NULL);
+
+	return NULL;
 }
 
 static int	**init_bitmap(void)
