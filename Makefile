@@ -62,7 +62,7 @@ FILES = $(MATRICES)		\
 		$(OBJECTS)		\
 		$(PARSING)		\
 		$(RENDERING)	\
-		$(ROTATION)		\
+		$(ROTATION)
 
 SRCS = $(addprefix srcs/, $(addsuffix .c, 		minirt				\
 												mlx_handling		\
@@ -71,8 +71,19 @@ SRCS = $(addprefix srcs/, $(addsuffix .c, 		minirt				\
 TEST_SRCS = $(addprefix srcs/, $(addsuffix .c, 	$(FILES)			\
 												$(TESTS)))
 
-OBJS = $(SRCS:.c=.o)
-TEST_OBJS = $(TEST_SRCS:.c=.o)
+OBJ_DIR = obj
+OBJS = $(SRCS:srcs/%.c=$(OBJ_DIR)/%.o)
+TEST_OBJS = $(TEST_SRCS:srcs/%.c=$(OBJ_DIR)/%.o)
+
+OBJ_DIRS = $(sort $(dir $(OBJS)))
+
+# Create directories if needed
+$(OBJ_DIRS):
+	mkdir -p $@
+
+# Pattern rule: compile .c -> obj/.o preserving paths
+$(OBJ_DIR)/%.o: srcs/%.c | $(OBJ_DIRS)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 all: $(NAME)
 
@@ -86,27 +97,26 @@ clean:
 	make clean -C ./libs/minilibx-linux
 	rm -f $(OBJS)
 	rm -f $(TEST_OBJS)
-	rm -f $(DEBUG_OBJS)
-
-test: $(TEST_OBJS)
-	@make -C ./libs/libft
-	@make -C ./libs/minilibx-linux
-	$(CC) $(CFLAGS) $(TEST_OBJS) $(LIBFLAGS) -o $(TEST_NAME)
 
 fclean: clean
 	rm -f libs/libft/libft.a
 	rm -f libs/libft.a
 	rm -f libs/libmlx.a
 	rm -f $(NAME)
-	rm -rf $(TEST_NAME)
+	rm -f $(TEST_NAME)
 
 re: fclean all
+
+test: $(TEST_OBJS)
+	@make -C ./libs/libft
+	@make -C ./libs/minilibx-linux
+	$(CC) $(CFLAGS) $(TEST_OBJS) $(LIBFLAGS) -o $(TEST_NAME)
 
 valgrind:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s ./$(NAME)
 
 full: re
-		make clean
-		clear
+	make clean
+	clear
 
-.PHONY: all clean fclean re valgrind full
+.PHONY: all clean fclean re test valgrind full
