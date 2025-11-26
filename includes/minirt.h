@@ -49,7 +49,7 @@
 // # define SCREEN_X 80
 // # define SCREEN_Y 50
 
-# define RES_SCALE 1
+# define RES_SCALE 4
 // 1 2 4 8
 
 # define DOTTED 0
@@ -62,7 +62,7 @@
 // use the amount of physical cores your computer
 //	has for optimal speed
 
-# define MOUSE_MOVE 0
+# define MOUSE_MOVE 1
 // 0 1
 
 # define MOUSE_SENSE 0.5

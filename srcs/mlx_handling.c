@@ -63,28 +63,7 @@ static int	detect_key_inputs(int input, t_mini *mini)
 	return (0);
 }
 
-/* int detect_mouse_movements( int x, int y, t_mini *mini)
-{	
-	t_tuple	*orient;
-	
-    printf("x: %d, y: %d\n", x, y);
-
-	orient = &mini->objs->cams->orient;
-	if (y < 67) // up
-		mini->objs->cams->orient = rotate_x_degrees(orient, (y - 67) * MOUSE_SENSE);
-	if (y > 67)
-		mini->objs->cams->orient = rotate_x_degrees(orient, (y - 67) * MOUSE_SENSE);
-	if (x < 120) // left
-		mini->objs->cams->orient = rotate_y_degrees(orient, (x - 120) * MOUSE_SENSE);
-	if (x > 120)
-		mini->objs->cams->orient = rotate_y_degrees(orient, (x - 120) * MOUSE_SENSE);
-	if (x != 120 || y != 67)
-		mlx_mouse_move(mini->mlx, mini->win, SCREEN_X / 2, SCREEN_Y / 2);
-	// render_frame(mini);
-    return (0);
-} */
-
-int detect_mouse_movements(int x, int y, t_mini *mini)
+/* int detect_mouse_movements(int x, int y, t_mini *mini)
 {	
     t_tuple orient = mini->objs->cams->orient; // copy the current orientation
     int dx = x - SCREEN_X / 2;
@@ -102,6 +81,53 @@ int detect_mouse_movements(int x, int y, t_mini *mini)
         mlx_mouse_move(mini->mlx, mini->win, SCREEN_X / 2, SCREEN_Y / 2);
 
     return (0);
+} */
+t_tuple rotate_around_axis_tuple(t_tuple *v, t_tuple *axis, float degrees)
+{
+    float rad = degrees * (M_PI / 180.0);
+    t_tuple k = normalise_vector(axis);
+    t_tuple v_parallel = scale_tuple(&k, dot_product(v, &k)); // component along axis
+    t_tuple v_perp = subtract_tuples(v, &v_parallel);         // component perpendicular
+    t_tuple w = cross_product(&k, &v_perp);
+
+    t_tuple term1 = scale_tuple(&v_perp, cos(rad));
+    t_tuple term2 = scale_tuple(&w, sin(rad));
+    t_tuple result = add_tuples(&v_parallel, &term1);
+    result = add_tuples(&result, &term2);
+
+    return result;
+}
+
+int detect_mouse_movements(int x, int y, t_mini *mini)
+{
+    t_tuple forward = mini->objs->cams->orient;
+    t_tuple world_up = create_vector(0, 1, 0);
+    float dx = x - SCREEN_X / 2;
+    float dy = y - SCREEN_Y / 2;
+	dy = -dy;
+
+    if (dx != 0 || dy != 0)
+    {
+        // --- YAW: horizontal rotation around world up ---
+        if (dx != 0)
+            forward = rotate_y_degrees(&forward, dx * MOUSE_SENSE);
+
+        // --- compute camera right vector ---
+        t_tuple right = cross_product(&world_up, &forward);
+        right = normalise_vector(&right);
+
+        // --- PITCH: vertical rotation around camera right axis ---
+        if (dy != 0)
+            forward = rotate_around_axis_tuple(&forward, &right, -dy * MOUSE_SENSE);
+
+        // --- normalize and store orientation ---
+        forward = normalise_vector(&forward);
+        mini->objs->cams->orient = forward;
+
+        // --- reset mouse to center ---
+        mlx_mouse_move(mini->mlx, mini->win, SCREEN_X / 2, SCREEN_Y / 2);
+    }
+    return 0;
 }
 
 
