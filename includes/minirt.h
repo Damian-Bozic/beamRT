@@ -13,25 +13,25 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
-# include <fcntl.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <math.h>
 # include "../libs/libft/libft.h"
 # include "../libs/minilibx-linux/mlx.h"
-# include "structs.h"
 # include "parsing.h"
 # include "rendering.h"
+# include "structs.h"
 # include "tests.h"
+# include <fcntl.h>
+# include <math.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 # define EPSILON 0.00001
 
-// # define SCREEN_X 1820
-// # define SCREEN_Y 1024
+# define SCREEN_X 1820
+# define SCREEN_Y 1024
 
-# define SCREEN_X 1280
-# define SCREEN_Y 720
+// # define SCREEN_X 1280
+// # define SCREEN_Y 720
 
 // # define SCREEN_X 480
 // # define SCREEN_Y 720
@@ -42,22 +42,30 @@
 
 // # define SCREEN_X 240
 // # define SCREEN_Y 135
-# define RES_SCALE 1
 
-# define N_OF_CORES 20
-# define MOUSE_SENSE 0.5
 // # define SCREEN_X 240
 // # define SCREEN_Y 160
 
 // # define SCREEN_X 80
 // # define SCREEN_Y 50
 
-// # define SCREEN_X -1280
-// # define SCREEN_Y 720
+# define RES_SCALE 1
+// 1 2 4 8
 
-// # define SCREEN_X 1280
-// # define SCREEN_Y 0
+# define DOTTED 0
+// 0 1
 
+# define MSAA 1
+// 1 2 4 8 16
+
+# define N_OF_CORES 20
+// use the amount of physical cores your computer
+//	has for optimal speed
+
+# define MOUSE_MOVE 0
+// 0 1
+
+# define MOUSE_SENSE 0.5
 
 // calculate_light
 void		find_specular(t_pixel *pixel, t_light *light);

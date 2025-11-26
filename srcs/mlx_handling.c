@@ -155,9 +155,9 @@ void	init_mlx(t_mini *mini)
 {
 	mini->mlx = mlx_init();
 	// TEMP SCREEN SIZE INCREASE TODO
-	mini->win = mlx_new_window(mini->mlx, SCREEN_X * RES_SCALE, SCREEN_Y * RES_SCALE,
+	mini->win = mlx_new_window(mini->mlx, SCREEN_X, SCREEN_Y,
 			"Sisyphean RayTrace");
-	mini->img_buf = mlx_new_image(mini->mlx, SCREEN_X * RES_SCALE, SCREEN_Y * RES_SCALE);
+	mini->img_buf = mlx_new_image(mini->mlx, SCREEN_X, SCREEN_Y);
 	mlx_string_put(mini->mlx, mini->win, (SCREEN_X / 2) - 96, (SCREEN_Y / 2)
 		- 3, 0xFFFFCC, "A cylinder, a sphere, and a plane");
 	mlx_string_put(mini->mlx, mini->win, (SCREEN_X / 2) - 120, (SCREEN_Y / 2)
@@ -171,7 +171,8 @@ void	init_mlx(t_mini *mini)
 	render_frame(mini);
 	mlx_key_hook(mini->win, detect_key_inputs, mini);
 	mlx_hook(mini->win, 17, 0, detect_close, mini);
-	// mlx_hook(mini->win, 6, 1L<<6, detect_mouse_movements, mini);
-	// mlx_loop_hook(mini->mlx, &temp_smoother, mini);
+	if (MOUSE_MOVE == 1)
+		mlx_hook(mini->win, 6, 1L<<6, detect_mouse_movements, mini);
+	mlx_loop_hook(mini->mlx, &temp_smoother, mini);
 	mlx_loop(mini->mlx);
 }
