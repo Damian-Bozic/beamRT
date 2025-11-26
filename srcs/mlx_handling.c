@@ -27,7 +27,7 @@ void	clean_exit(t_mini *mini)
 	exit(0);
 }
 
-static void	handle_rotation_keys(int input, t_mini *mini)
+/* static void	handle_rotation_keys(int input, t_mini *mini)
 {
 	t_tuple	*orient;
 
@@ -61,6 +61,104 @@ static int	detect_key_inputs(int input, t_mini *mini)
 	handle_rotation_keys(input, mini);
 	// render_frame(mini);
 	return (0);
+} */
+
+t_tuple rotate_around_axis_tuple(t_tuple *v, t_tuple *axis, float degrees)
+{
+    float rad = degrees * (M_PI / 180.0);
+    t_tuple k = normalise_vector(axis);
+    t_tuple v_parallel = scale_tuple(&k, dot_product(v, &k)); // component along axis
+    t_tuple v_perp = subtract_tuples(v, &v_parallel);         // component perpendicular
+    t_tuple w = cross_product(&k, &v_perp);
+
+    t_tuple term1 = scale_tuple(&v_perp, cos(rad));
+    t_tuple term2 = scale_tuple(&w, sin(rad));
+    t_tuple result = add_tuples(&v_parallel, &term1);
+    result = add_tuples(&result, &term2);
+
+    return result;
+}
+
+
+static void	handle_rotation_keys(int input, t_mini *mini)
+{
+	t_tuple	*orient;
+	t_tuple	world_up;
+	t_tuple	right;
+
+	orient = &mini->objs->cams->orient;
+	world_up = create_vector(0, 1, 0);
+
+	// compute camera right axis
+	right = cross_product(&world_up, orient);
+	right = normalise_vector(&right);
+
+	if (KEY_UP == input)
+	{
+		// pitch up (around camera right axis)
+		mini->objs->cams->orient = rotate_around_axis_tuple(orient, &right, -10.0);
+		mini->objs->cams->orient = normalise_vector(&mini->objs->cams->orient);
+	}
+	if (KEY_DOWN == input)
+	{
+		// pitch down
+		mini->objs->cams->orient = rotate_around_axis_tuple(orient, &right, 10.0);
+		mini->objs->cams->orient = normalise_vector(&mini->objs->cams->orient);
+	}
+	if (KEY_LEFT == input)
+	{
+		// yaw left (around global up)
+		mini->objs->cams->orient = rotate_y_degrees(orient, -10.0);
+	}
+	if (KEY_RIGHT == input)
+	{
+		// yaw right
+		mini->objs->cams->orient = rotate_y_degrees(orient, 10.0);
+	}
+}
+
+static int	detect_key_inputs(int input, t_mini *mini)
+{
+	t_tuple	forward;
+	t_tuple	world_up;
+	t_tuple	right;
+	t_tuple	move_delta;
+	float	speed = 1.0;
+
+	forward = mini->objs->cams->orient;
+	world_up = create_vector(0, 1, 0);
+	right = cross_product(&world_up, &forward);
+	right = normalise_vector(&right);
+	move_delta = create_empty_vector();
+
+	if (KEY_ESC == input)
+		clean_exit(mini);
+
+	// camera-local movement
+	if (KEY_W == input)
+		move_delta = add_tuples(&move_delta, &forward);
+	if (KEY_S == input)
+		move_delta = subtract_tuples(&move_delta, &forward);
+	if (KEY_A == input)
+		move_delta = subtract_tuples(&move_delta, &right);
+	if (KEY_D == input)
+		move_delta = add_tuples(&move_delta, &right);
+	if (KEY_Q == input)
+		move_delta = add_tuples(&move_delta, &world_up);
+	if (KEY_E == input)
+		move_delta = subtract_tuples(&move_delta, &world_up);
+
+	// scale by speed
+	move_delta = scale_tuple(&move_delta, speed);
+
+	// update camera position
+	mini->objs->cams->pos = add_tuples(&mini->objs->cams->pos, &move_delta);
+
+	// handle rotation keys
+	handle_rotation_keys(input, mini);
+
+	// render_frame(mini); // uncomment when ready
+	return (0);
 }
 
 /* int detect_mouse_movements(int x, int y, t_mini *mini)
@@ -82,21 +180,6 @@ static int	detect_key_inputs(int input, t_mini *mini)
 
     return (0);
 } */
-t_tuple rotate_around_axis_tuple(t_tuple *v, t_tuple *axis, float degrees)
-{
-    float rad = degrees * (M_PI / 180.0);
-    t_tuple k = normalise_vector(axis);
-    t_tuple v_parallel = scale_tuple(&k, dot_product(v, &k)); // component along axis
-    t_tuple v_perp = subtract_tuples(v, &v_parallel);         // component perpendicular
-    t_tuple w = cross_product(&k, &v_perp);
-
-    t_tuple term1 = scale_tuple(&v_perp, cos(rad));
-    t_tuple term2 = scale_tuple(&w, sin(rad));
-    t_tuple result = add_tuples(&v_parallel, &term1);
-    result = add_tuples(&result, &term2);
-
-    return result;
-}
 
 int detect_mouse_movements(int x, int y, t_mini *mini)
 {
